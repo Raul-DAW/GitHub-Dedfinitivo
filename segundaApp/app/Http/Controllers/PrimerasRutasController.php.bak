@@ -1,0 +1,38 @@
+<?php
+
+//package
+namespace App\Http\Controllers;
+
+//import Request (Petición)
+use Illuminate\Http\Request;
+
+class PrimerasRutasController extends Controller
+{
+    function primerMetodo()
+    {
+        //return view('welcome');
+        echo 'Yo soy el primer método.';
+    }
+}
+
+//package
+namespace App\Http\Controllers;
+
+//import Request (Petición)
+use Illuminate\Http\Request;
+
+class PrimerasRutasController extends Controller
+{
+    function primerMetodo()
+    {
+        //return view('welcome');
+        echo '
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class PrimerasRutasController extends Controller
+{
+    //
+}

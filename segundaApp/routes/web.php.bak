@@ -1,0 +1,27 @@
+<?php  
+  
+//use <-> import  
+use App\Http\Controllers\PrimerasRutasController;  
+use Illuminate\Support\Facades\Route; 
+use App\Http\Controllers\SegundoControlador;  
+  
+//Route::get('primerMetodo', [PrimerasRutasController::class, 'primerMetodo']);  
+  
+//Ejemplo de lo que no hay que hacer  
+/* 
+Route::get('hola', function () {  
+    return view('welcome');  
+}); 
+*/  
+  
+//Route::get('/', [NombreControlador::class, 'método']);  
+ 
+Route::get('mensaje', [PrimerasRutasController::class, 'primerMensaje']);  
+
+Route::get('segunda/enlaces', [SegundoControlador::class, 'enlaces']);
+
+Route::get('primerMetodo', [SegundoControlador::class, 'primerMetodo']);
+
+Route::get('/', [PrimerasRutasController::class, 'index']);
+
+Route::get('tercera/destino', [App\Http\Controllers\TerceraRutasController::class, 'notFound']);
