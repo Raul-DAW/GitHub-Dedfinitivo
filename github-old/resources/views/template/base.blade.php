@@ -19,6 +19,9 @@
 
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{ asset('assets/style/styles.css') }}" rel="stylesheet" />
+         
+        @yield('css')
+
     </head>
 
     <body id="page-top">
@@ -79,6 +82,21 @@
                             <a class="nav-link py-3 px-0 px-lg-3 rounded"
                                href="{{ route('array') }}">
                                 Array
+                            </a>
+                        </li>
+
+                         <li class="nav-item mx-0 mx-lg-1">
+                            <a class="nav-link py-3 px-0 px-lg-3 rounded"
+                               href="{{ route('alumno.index') }}">
+                                AlumnosDB
+                            </a>
+                        </li>
+
+
+                         <li class="nav-item mx-0 mx-lg-1">
+                            <a class="nav-link py-3 px-0 px-lg-3 rounded"
+                               href="{{ route('alumno.create') }}">
+                                CrearAlumno
                             </a>
                         </li>
 
