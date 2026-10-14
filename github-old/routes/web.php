@@ -20,7 +20,11 @@ Route::post('alumno', [AlumnoController::class, 'store'])->name('alumno.store');
 Route::get('alumno', [AlumnoController::class, 'index'])->name('alumno.index');
 
 
-Route::put('alumno', [AlumnoController::class, 'update'])->name('alumno.update');
-Route::get('alumno/edit', [AlumnoController::class, 'edit'])->name('alumno.edit');
+
+Route::get('alumno/{alumno}/edit', [AlumnoController::class, 'edit'])->name('alumno.edit');
 
 Route::get('alumno/{alumno}', [AlumnoController::class, 'show'])->name('alumno.show');
+
+Route::put('alumno/{alumno}', [AlumnoController::class, 'update'])->name('alumno.update');
+
+Route::delete('alumno/{alumno}', [AlumnoController::class, 'destroy'])->name('alumno.destroy');

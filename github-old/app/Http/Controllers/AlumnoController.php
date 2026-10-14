@@ -16,12 +16,14 @@ class AlumnoController extends Controller
 }
 
 public function destroy(Alumno $alumno): RedirectResponse {
-    return redirect()->route('index');
+    $alumno->delete();
+    return redirect()->route('alumno.index');
+    //dd(['destroy', $alumno]);
 }
 
 public function edit(Alumno $alumno): View {
     //
-    return view('alumno.edit', []);
+    return view('alumno.edit', ['alumno' => $alumno]);
 
 }
 
@@ -39,7 +41,7 @@ public function index(): View {
 
 public function show(Alumno $alumno): View {
     //
-    dd($alumno);
+    //dd($alumno);
     return view('alumno.show', ['alumno' => $alumno]);
 
 }
@@ -57,7 +59,7 @@ public function store(Request $request)
     $alumno = new Alumno($request->all()); /*enseña todos los datos que me lleguen */
 
     $alumno->save();
-    dd($alumno);
+    return redirect() ->route('alumno.index');
 
     /*
     $alumno->nombre = $request->nombre;
@@ -72,7 +74,9 @@ public function store(Request $request)
 }
 
 public function update(Request $request, Alumno $alumno): RedirectResponse {
-    return redirect()->route('index');
+    //actualizar el alumno
+    $alumno->update($request->all());
+    return redirect()->route('alumno.index');
 
 }
 

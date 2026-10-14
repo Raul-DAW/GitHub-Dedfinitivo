@@ -6,11 +6,11 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
 
-            <h2 class="mb-4">Crear alumno</h2>
+            <h2 class="mb-4">Editar Alumno</h2>
 
-            <form action="{{ route('alumno.update') }}" method="post">
+            <form action="{{ route('alumno.update', $alumno) }}" method="post">
                 @method('put')
-                @csrf
+                @csrf /*Medida de seguridad que se usa con todas las rutas que no sean */
 
                 {{-- Nombre --}}
                 <div class="mb-3">
@@ -25,6 +25,7 @@
                         class="form-control"
                         maxlength="100"
                         placeholder="Introduce el nombre del alumno"
+                        value="{{ $alumno->nombre }}"
                         required>
                 </div>
 
@@ -41,6 +42,7 @@
                         class="form-control"
                         maxlength="130"
                         placeholder="Introduce los apellidos del alumno"
+                        value="{{ $alumno->apellido }}"
                         required>
                 </div>
 
@@ -54,7 +56,8 @@
                         type="date"
                         id="fnac"
                         name="fnac"
-                        class="form-control">
+                        class="form-control"
+                        value="{{ $alumno->fnac }}">
                 </div>
 
                 {{-- Género --}}
@@ -64,16 +67,27 @@
                     </label>
 
                     <select
-                        id="genero"
-                        name="genero"
-                        class="form-select">
+    id="genero"
+    name="genero"
+    class="form-select">
 
-                        <option value="">No especificado</option>
-                        <option value="masculino">Masculino</option>
-                        <option value="femenino">Femenino</option>
-                        <option value="otro">Otro</option>
+    <option value="" {{ $alumno->genero == '' ? 'selected' : '' }}>
+        No especificado
+    </option>
 
-                    </select>
+    <option value="masculino" {{ $alumno->genero == 'masculino' ? 'selected' : '' }}>
+        Masculino
+    </option>
+
+    <option value="femenino" {{ $alumno->genero == 'femenino' ? 'selected' : '' }}>
+        Femenino
+    </option>
+
+    <option value="otro" {{ $alumno->genero == 'otro' ? 'selected' : '' }}>
+        Otro
+    </option>
+
+</select>
                 </div>
 
                 {{-- Nota de acceso --}}
@@ -90,13 +104,18 @@
                         min="0"
                         max="10"
                         step="0.01"
-                        placeholder="Introduce la nota de acceso">
+                        placeholder="Introduce la nota de acceso"
+                        value="{{ $alumno->nacceso }}">
                 </div>
 
                 {{-- Botón --}}
                 <button type="submit" class="btn btn-primary">
-                    Editar alumno
+                    Edit puppil
                 </button>
+
+                <a href="{{ route('alumno.index') }}" class="btn btn-secondary">
+                         Back
+                        </a>
 
             </form>
 

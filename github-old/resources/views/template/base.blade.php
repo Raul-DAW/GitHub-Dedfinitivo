@@ -19,8 +19,7 @@
 
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{ asset('assets/style/styles.css') }}" rel="stylesheet" />
-         
-        @yield('css')
+         @yield('css')
 
     </head>
 
@@ -170,7 +169,7 @@
 
         <!-- Core theme JS-->
         <script src="{{ asset('assets/script/scripts.js') }}"></script>
-
+         @yield('script')
         <!--<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>-->
 
     </body>

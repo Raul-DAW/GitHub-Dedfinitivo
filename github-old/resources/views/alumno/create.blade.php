@@ -61,17 +61,18 @@
                         Género:
                     </label>
 
-                    <select
-                        id="genero"
-                        name="genero"
-                        class="form-select">
+                  <select
+    id="genero"
+    name="genero"
+    class="form-select"
+    required>
 
-                        <option value="">No especificado</option>
-                        <option value="masculino">Masculino</option>
-                        <option value="femenino">Femenino</option>
-                        <option value="otro">Otro</option>
+    <option value="">Selecciona un género</option>
+    <option value="masculino">Masculino</option>
+    <option value="femenino">Femenino</option>
+    <option value="otro">Otro</option>
 
-                    </select>
+</select>
                 </div>
 
                 {{-- Nota de acceso --}}
