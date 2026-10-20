@@ -1,0 +1,20 @@
+.card-img-top {
+    height: 250px;
+    width: 100%;
+    object-fit: contain;
+}
+
+.card {
+    background-color: #dbeafe;
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.card-title {
+    color: #1e3a8a;
+}
+
+.card p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
