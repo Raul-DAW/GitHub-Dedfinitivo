@@ -8,9 +8,9 @@
 
             <h2 class="mb-4">Editar Alumno</h2>
 
-            <form action="{{ route('alumno.update', $alumno) }}" method="post">
+            <form action="{{ route('alumno.update', $alumno) }}" method="post" novalidate>
                 @method('put')
-                @csrf /*Medida de seguridad que se usa con todas las rutas que no sean */
+                @csrf {{-- Medida de seguridad que se usa con todas las rutas que no sean GET --}}
 
                 {{-- Nombre --}}
                 <div class="mb-3">
@@ -25,9 +25,12 @@
                         class="form-control"
                         maxlength="100"
                         placeholder="Introduce el nombre del alumno"
-                        value="{{ $alumno->nombre }}"
+                        value="{{ old('nombre', $alumno->nombre) }}"
                         required>
                 </div>
+                     @error('nombre')
+            <div class="alert alert-danger" role="alert"> {{ $message }}</div>
+             @enderror
 
                 {{-- Apellidos --}}
                 <div class="mb-3">
@@ -42,9 +45,13 @@
                         class="form-control"
                         maxlength="130"
                         placeholder="Introduce los apellidos del alumno"
-                        value="{{ $alumno->apellido }}"
+                         value="{{ old('apellido', $alumno->apellido) }}"
                         required>
                 </div>
+
+                  @error('apellido')
+            <div class="alert alert-danger" role="alert"> {{ $message }}</div>
+             @enderror
 
                 {{-- Fecha de nacimiento --}}
                 <div class="mb-3">
@@ -57,38 +64,51 @@
                         id="fnac"
                         name="fnac"
                         class="form-control"
-                        value="{{ $alumno->fnac }}">
+                        max="{{ now()->format('Y-m-d') }}" {{--novalidate--}}
+                         value="{{ old('fnac', $alumno->fnac) }}" >
                 </div>
 
-                {{-- Género --}}
+                @error('fnac')
+            <div class="alert alert-danger" role="alert"> {{ $message }}</div>
+             @enderror
+
+               {{-- Género --}}
                 <div class="mb-3">
+
                     <label for="genero" class="form-label">
                         Género:
                     </label>
 
                     <select
-    id="genero"
-    name="genero"
-    class="form-select">
+                        id="genero"
+                        name="genero"
+                        class="form-select">
 
-    <option value="" {{ $alumno->genero == '' ? 'selected' : '' }}>
-        No especificado
-    </option>
+                        <option value="" {{ old('genero', $alumno->genero) == '' ? 'selected' : '' }}>
+                            No especificado
+                        </option>
 
-    <option value="masculino" {{ $alumno->genero == 'masculino' ? 'selected' : '' }}>
-        Masculino
-    </option>
+                        <option value="masculino" {{ old('genero', $alumno->genero) == 'masculino' ? 'selected' : '' }}>
+                            Masculino
+                        </option>
 
-    <option value="femenino" {{ $alumno->genero == 'femenino' ? 'selected' : '' }}>
-        Femenino
-    </option>
+                        <option value="femenino" {{ old('genero', $alumno->genero) == 'femenino' ? 'selected' : '' }}>
+                            Femenino
+                        </option>
 
-    <option value="otro" {{ $alumno->genero == 'otro' ? 'selected' : '' }}>
-        Otro
-    </option>
+                        <option value="otro" {{ old('genero', $alumno->genero) == 'otro' ? 'selected' : '' }}>
+                            Otro
+                        </option>
 
-</select>
+                    </select>
+
                 </div>
+
+                @error('genero')
+                    <div class="alert alert-danger" role="alert">
+                        {{ $message }}
+                    </div>
+                @enderror
 
                 {{-- Nota de acceso --}}
                 <div class="mb-3">
@@ -105,7 +125,7 @@
                         max="10"
                         step="0.01"
                         placeholder="Introduce la nota de acceso"
-                        value="{{ $alumno->nacceso }}">
+                         value="{{ old('nacceso', $alumno->nacceso) }}">
                 </div>
 
                 {{-- Botón --}}
@@ -122,5 +142,8 @@
         </div>
     </div>
 </div>
+  @error('nacceso')
+            <div class="alert alert-danger" role="alert"> {{ $message }}</div>
+             @enderror
 
 @endsection

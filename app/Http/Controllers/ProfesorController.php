@@ -53,10 +53,19 @@ private const MESSAGES = [
     }
 
     public function destroy(Profesor $profesor): RedirectResponse {
+    try {
         $profesor->delete();
-
-        return redirect()->route('profesor.index');
+    } catch (Exception $e) {
+        return back()->withInput()->withErrors([
+            'error' => 'Error al borrar el profesor',
+            // 'nombre' => 'Este campo forma parte de la clave única',
+            //'apellido' => 'Este campo también forma parte de la clave única',
+        ]);
     }
+
+    return redirect()->route('profesor.index')->with(['succes' => 'Se ha borrado el profesor correctamente']);
+    //dd(['destroy', $alumno]);
+}
 
     public function edit(Profesor $profesor): View {
         return view('profesor.edit', ['profesor' => $profesor]);
@@ -75,38 +84,68 @@ private const MESSAGES = [
 public function store(Request $request){
     // dd($request->all());
     //1ºValidar
- $validator = Validator::make($request->all(), self::RULES, self::MESSAGES);
- if($validator -> fails()){
-    return back()->withInput() ->withErrors($validator);
-}
+    $validator = Validator::make($request->all(), self::RULES, self::MESSAGES);
+
+    if($validator -> fails()){
+        return back()->withInput() ->withErrors($validator);
+    }
 
     $profesor = new Profesor($request->all()); /*enseña todos los datos que me lleguen */
-    try {
-    $profesor->save();
 
-} catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
-    // Error por duplicar un valor único
-    return back()->withInput()->withErrors([
-        'error' => 'Clave única duplicada',
-       // 'nombre' => 'Este campo forma parte de la clave única',
-        //'apellido' => 'Este campo también forma parte de la clave única',
+    try {
+        $profesor->save();
+
+    } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+        // Error por duplicar un valor único
+        return back()->withInput()->withErrors([
+            'error' => 'Clave única duplicada(No puede haber un profesor con los mismos nombres y apellidos)',
+            // 'nombre' => 'Este campo forma parte de la clave única',
+            //'apellido' => 'Este campo también forma parte de la clave única',
         ]);
 
-} catch (\Exception $e) {
-    // Otros errores
-    echo 'global';
-    dd($e);
-}
+    } catch (\Exception $e) {
+        // Otros errores
+        return back()->withInput()->withErrors([
+            'error' => 'Error al crear el profesor',
+            // 'nombre' => 'Este campo forma parte de la clave única',
+            //'apellido' => 'Este campo también forma parte de la clave única',
+        ]);
+    }
 
     /*$alumno->save();*/
-    return redirect() ->route('profesor.index');
+    return redirect()->route('profesor.index')->with(['succes' => 'Se ha creado el profesor correctamente']);
 }
 
+
     public function update(Request $request, Profesor $profesor): RedirectResponse {
+    //actualizar el alumno
+    $validator = Validator::make($request->all(), self::RULES, self::MESSAGES);
+
+    if($validator -> fails()){
+        return back()->withInput() ->withErrors($validator);
+    }
+
+    try {
         $profesor->update($request->all());
 
-        return redirect()->route('profesor.index');
+    } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+        // Error por duplicar un valor único
+        return back()->withInput()->withErrors([
+            'error' => 'Clave única duplicada(Coinciden el nombre y el apellido)',
+            // 'nombre' => 'Este campo forma parte de la clave única',
+            //'apellido' => 'Este campo también forma parte de la clave única',
+        ]);
+
+    } catch (\Exception $e) {
+        return back()->withInput()->withErrors([
+            'error' => 'Error al editar el profesor',
+            // 'nombre' => 'Este campo forma parte de la clave única',
+            //'apellido' => 'Este campo también forma parte de la clave única',
+        ]);
     }
+
+    return redirect()->route('profesor.index')->with(['succes' => 'Se ha editado el profesor correctamente']);
+}
 }
 
 

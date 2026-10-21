@@ -83,6 +83,7 @@
                                 Array
                             </a>
                         </li>
+
                             <!-- Alumnos Base de datos--->
                          <li class="nav-item mx-0 mx-lg-1">
                             <a class="nav-link py-3 px-0 px-lg-3 rounded"
@@ -111,11 +112,19 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
 
-            @error('error')
+            @error('error')<!-- si llega un mensaje de tipo error con nombre error -->
                 <div class="alert alert-danger" role="alert">
                     {{ $message }}
                 </div>
             @enderror
+
+            @session('succes')<!-- Si llega una variable en la sesion de nombre succes, se mostrará un mensaje -->
+            <diV class="row">
+                <div class="alert alert-info" role="alert">
+                    {{ session('succes') }}
+                </div>
+             </div>
+            @endsession
 
             @yield('content')
             <!-- directiva de blade (@WORD) que crea una referencia que cuando herede puedo rellenar -->

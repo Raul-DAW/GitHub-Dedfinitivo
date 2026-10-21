@@ -8,7 +8,7 @@
 
             <h2 class="mb-4">Editar Profesor</h2>
 
-            <form action="{{ route('profesor.update', $profesor) }}" method="post">
+            <form action="{{ route('profesor.update', $profesor) }}" method="post" novalidate>
                 @method('put')
                 @csrf /*Medida de seguridad que se usa con todas las rutas que no sean */
 
@@ -26,8 +26,12 @@
                         maxlength="100"
                         placeholder="Introduce el nombre del profesor"
                         value="{{ $profesor->nombre }}"
+                        value="{{ old('nombre', $profesor->nombre) }}"
                         required>
                 </div>
+                 @error('nombre')
+            <div class="alert alert-danger" role="alert"> {{ $message }}</div>
+             @enderror
 
                 {{-- Apellidos --}}
                 <div class="mb-3">
@@ -42,9 +46,12 @@
                         class="form-control"
                         maxlength="130"
                         placeholder="Introduce los apellidos del profesor"
-                        value="{{ $profesor->apellido }}"
+                        value="{{ old('apellido', $profesor->apellido) }}"
                         required>
                 </div>
+                 @error('apellido')
+            <div class="alert alert-danger" role="alert"> {{ $message }}</div>
+             @enderror
 
                  {{-- Especialidad --}}
                 <div class="mb-3">
@@ -59,9 +66,12 @@
                         class="form-control"
                         maxlength="130"
                         placeholder="Introduce la especialidad del profesor"
-                        value="{{ $profesor->especialidad }}"
+                        value="{{ old('especialidad', $profesor->especialidad) }}"
                         required>
                 </div>
+                 @error('especialidad')
+            <div class="alert alert-danger" role="alert"> {{ $message }}</div>
+             @enderror
 
                 {{-- Fecha de Alta --}}
                 <div class="mb-3">
@@ -74,8 +84,13 @@
                         id="fchalt"
                         name="fchalt"
                         class="form-control"
-                        value="{{ $profesor->fchalt }}">
+                        value="{{ old('fchalt', $profesor->fchalt) }}"
+                        >
+                        {{--novalidate--}}
                 </div>
+                 @error('fchalt')
+            <div class="alert alert-danger" role="alert"> {{ $message }}</div>
+             @enderror
                 {{-- Salario --}}
                 <div class="mb-3">
                     <label for="salario" class="form-label">
@@ -91,8 +106,11 @@
                         max="99999999.99"
                         step="0.01"
                         placeholder="Introduce el salario del profesor"
-                        value="{{ $profesor->salario }}">
+                         value="{{ old('salario', $profesor->salario) }}">
                 </div>
+                 @error('salario')
+            <div class="alert alert-danger" role="alert"> {{ $message }}</div>
+             @enderror
 
                 {{-- Botón --}}
                 <button type="submit" class="btn btn-primary">

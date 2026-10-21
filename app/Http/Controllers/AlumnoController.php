@@ -47,14 +47,23 @@ private const MESSAGES =  [
     'genero.in' => 'El género seleccionado no es válido.',
  ];
 
-  public function create(): View {
+public function create(): View {
     //
     return view('alumno.create', []);
 }
 
 public function destroy(Alumno $alumno): RedirectResponse {
-    $alumno->delete();
-    return redirect()->route('alumno.index');
+    try {
+        $alumno->delete();
+    } catch (Exception $e) {
+        return back()->withInput()->withErrors([
+            'error' => 'Error al borrar el alumno',
+            // 'nombre' => 'Este campo forma parte de la clave única',
+            //'apellido' => 'Este campo también forma parte de la clave única',
+        ]);
+    }
+
+    return redirect()->route('alumno.index')->with(['succes' => 'Se ha borrado el alumno correctamente']);
     //dd(['destroy', $alumno]);
 }
 
@@ -67,6 +76,7 @@ public function edit(Alumno $alumno): View {
 public function index(): View {
     //
    /* $alumno = 'select * from alumno';*/
+   //session()->forget('success');
     $alumno = Alumno::all();
     //dd($alumno);
     return view('alumno.index', ['alumno' => $alumno]);
@@ -89,31 +99,37 @@ public function show(Alumno $alumno): View {
 public function store(Request $request){
     // dd($request->all());
     //1ºValidar
- $validator = Validator::make($request->all(), self::RULES, self::MESSAGES);
- if($validator -> fails()){
-    return back()->withInput() ->withErrors($validator);
-}
+    $validator = Validator::make($request->all(), self::RULES, self::MESSAGES);
+
+    if($validator -> fails()){
+        return back()->withInput() ->withErrors($validator);
+    }
 
     $alumno = new Alumno($request->all()); /*enseña todos los datos que me lleguen */
-    try {
-    $alumno->save();
 
-} catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
-    // Error por duplicar un valor único
-    return back()->withInput()->withErrors([
-        'error' => 'Clave única duplicada',
-       // 'nombre' => 'Este campo forma parte de la clave única',
-        //'apellido' => 'Este campo también forma parte de la clave única',
+    try {
+        $alumno->save();
+
+    } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+        // Error por duplicar un valor único
+        return back()->withInput()->withErrors([
+            'error' => 'Clave única duplicada',
+            // 'nombre' => 'Este campo forma parte de la clave única',
+            //'apellido' => 'Este campo también forma parte de la clave única',
         ]);
 
-} catch (\Exception $e) {
-    // Otros errores
-    echo 'global';
-    dd($e);
-}
+    } catch (\Exception $e) {
+        // Otros errores
+        return back()->withInput()->withErrors([
+            'error' => 'Error al crear el alumno',
+            // 'nombre' => 'Este campo forma parte de la clave única',
+            //'apellido' => 'Este campo también forma parte de la clave única',
+        ]);
+    }
 
     /*$alumno->save();*/
-    return redirect() ->route('alumno.index');
+    //session(['succes' => 'Se ha creado el alumno correctamente V2']);
+    return redirect()->route('alumno.index')->with(['succes' => 'Se ha creado el alumno correctamente']);
 
     /*
     $alumno->nombre = $request->nombre;
@@ -129,14 +145,36 @@ public function store(Request $request){
 
 public function update(Request $request, Alumno $alumno): RedirectResponse {
     //actualizar el alumno
-    $alumno->update($request->all());
-    return redirect()->route('alumno.index');
+    $validator = Validator::make($request->all(), self::RULES, self::MESSAGES);
+
+    if($validator -> fails()){
+        return back()->withInput() ->withErrors($validator);
+    }
+
+    try {
+        $alumno->update($request->all());
+
+    } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+        // Error por duplicar un valor único
+        return back()->withInput()->withErrors([
+            'error' => 'Clave única duplicada',
+            // 'nombre' => 'Este campo forma parte de la clave única',
+            //'apellido' => 'Este campo también forma parte de la clave única',
+        ]);
+
+    } catch (\Exception $e) {
+        return back()->withInput()->withErrors([
+            'error' => 'Error al editar el alumno',
+            // 'nombre' => 'Este campo forma parte de la clave única',
+            //'apellido' => 'Este campo también forma parte de la clave única',
+        ]);
+    }
+
+    return redirect()->route('alumno.index')->with(['succes' => 'Se ha editado el alumno correctamente']);
+}
 
 }
 
-
-
-}
 
 
 
